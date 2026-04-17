@@ -1,0 +1,36 @@
+version: "3.9"
+
+services:
+  krscan:
+    build: .
+    container_name: krscan
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    volumes:
+      # 데이터 파일 영구 보존
+      - ./data:/app/data
+    environment:
+      - KRSCAN_DATA_DIR=/app/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # 선택: nginx 리버스 프록시 (도메인 연결 시)
+  nginx:
+    image: nginx:alpine
+    container_name: krscan_nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      # HTTPS 인증서 (Let's Encrypt 등)
+      # - /etc/letsencrypt:/etc/letsencrypt:ro
+    depends_on:
+      - krscan
+    profiles:
+      - nginx   # docker compose --profile nginx up 으로 활성화
