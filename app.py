@@ -6,6 +6,10 @@ KR Stock Scanner v4 — 주식 + 코인(BTC/ETH/XRP)
 """
 from flask import Flask, render_template_string, jsonify, request, session, redirect, url_for
 import hashlib, json, os, secrets, smtplib, threading
+
+# ── 데이터 디렉토리 (환경변수 or 앱 디렉토리) ──
+DATA_DIR = os.environ.get("KRSCAN_DATA_DIR", os.path.dirname(os.path.abspath(__file__)))
+os.makedirs(DATA_DIR, exist_ok=True)
 from email.mime.multipart import MIMEMultipart
 from email.mime.text      import MIMEText
 from datetime import datetime, timedelta
@@ -42,8 +46,6 @@ USERS_FILE = os.path.join(DATA_DIR, "users.json")
 
 
 ADMIN_ID = "langpoon"   # 관리자 아이디
-import os as _os
-DATA_DIR = _os.environ.get("KRSCAN_DATA_DIR", _os.path.dirname(_os.path.abspath(__file__)))
 
 EMAIL_CFG_FILE  = os.path.join(DATA_DIR, "email_config.json")
 SERVER_FAV_FILE = os.path.join(DATA_DIR, "server_favorites.json")
