@@ -1,7 +1,10 @@
 flask>=3.0.0
 pandas>=2.0.0
 yfinance>=0.2.40
-FinanceDataReader>=0.9.50
+finance-datareader
 ccxt>=4.0.0
 apscheduler>=3.10.0
 gunicorn>=21.2.0
+requests>=2.28.0
+lxml>=4.9.0
+beautifulsoup4>=4.11.0
